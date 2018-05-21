@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1526074140 source:c:\test\mercedes guerrero\ppl1 estacionamiento\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Propietario.h"
+
+1526072529 c:\test\mercedes guerrero\ppl1 estacionamiento\propietario.h
+
+1526073689 source:c:\test\mercedes guerrero\ppl1 estacionamiento\propietario.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<conio.h>
+	"Propietario.h"
+
