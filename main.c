@@ -41,13 +41,15 @@ int main()
         switch(opcion)
         {
             case 1:
-                //printf("\nALTA DE PROPIETARIO \n");
                 ePropietario_alta(listadoPropietarios, TAMPROPIETARIO);
+
                 presionarContinuar();
                 break;
             case 2:
+                mostrarListadoPropietarios(listadoPropietarios, TAMPROPIETARIO);
 
-                printf("\nMODIFICAR DATOS DEL PROPIETARIO \n");
+                ePropietario_modificacion(listadoPropietarios, TAMPROPIETARIO, ePropietario_buscarPorId(listadoPropietarios, TAMPROPIETARIO, pedirNumEntero("\nIngrese ID a modificar: ")));
+
                 presionarContinuar();
                 break;
             case 3:

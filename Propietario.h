@@ -23,7 +23,16 @@ int ePropietario_siguienteId(ePropietario[], int limite);
 int ePropietario_buscarLugarLibre(ePropietario[],int limite);
 
 void getString(char mensaje[], char input[]);
+
+/** \brief VALIDA QUE UN STRING DE CARACTERES NO SE EXCEDA DEL LÍMITE
+ *
+ * \param mensaje a ser mostrado
+ * \param mensaje de error
+ * \param input Array donde se cargará el texto ingresado
+ * \param limite de caracteres
+ */
 void getValidString(char mensaje[], char error[], char input[], int limite);
+
 int pedirNumEntero(char mensaje[]);
 
 void mostrarUnPropietario(ePropietario propietario);
@@ -31,8 +40,8 @@ int mostrarListadoPropietarios(ePropietario[], int limite);
 int mostrarListadoPropietariosConBorrados(ePropietario[] ,int limite);
 
 int ePropietario_alta(ePropietario[], int limite);
+int ePropietario_modificacion(ePropietario[] ,int limite, int posId);
 int ePropietario_baja(ePropietario[], int limite, int posId);
-int ePropietario_modificacion(ePropietario[] ,int limite, int id);
 
 int ePropietario_ordenar(ePropietario[] ,int limite, int orden);
 

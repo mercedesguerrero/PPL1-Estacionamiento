@@ -93,6 +93,7 @@ int ePropietario_buscarLugarLibre(ePropietario propietarios[], int limite)
     return retorno;
 }
 
+/**< SIGUIENTE ID */
 int ePropietario_siguienteId(ePropietario propietarios[],int limite)
 {
     int retorno = 0;
@@ -111,6 +112,66 @@ int ePropietario_siguienteId(ePropietario propietarios[],int limite)
         }
     }
     return retorno+1;
+}
+
+/**< PIDE UN STRING DE CARACTERES */
+void getString(char mensaje[], char input[])
+{
+    printf("%s", mensaje);
+    scanf("%s", input);
+}
+
+/**< VALIDA TAMAÑO DE STRING */
+void getValidString(char mensaje[], char error[], char input[], int limite)
+{
+    int j;
+    char auxString[limite+200]; //por si se pasa
+
+    getString(mensaje, input);
+
+    j= strlen(input);
+
+    while (j>= limite)
+    {
+        printf("Ha ingresado %d caracteres\n %s", j, error);
+        getString(mensaje, input);
+
+        j= strlen(input);
+
+    }
+
+    strcpy(auxString, input);
+}
+
+int pedirNumEntero(char mensaje[])
+{
+    int numeroEntero;
+
+    printf("%s", mensaje);
+    scanf("%d", &numeroEntero);
+
+    return numeroEntero;
+}
+
+/**< BUSCA POR ID Y SI LO ENCUENTRA DEVUELVE EL ÍNDICE */
+int ePropietario_buscarPorId(ePropietario propietarios[] ,int limite, int id)
+{
+    int retorno = -1;
+
+    if(limite > 0 && propietarios != NULL)
+    {
+        retorno = -2;
+        for(int i=0; i<limite; i++)
+        {
+            if(propietarios[i].estado == OCUPADO && propietarios[i].idPropietario == id)
+            {
+                printf("\nSe encontro el id %d", id);
+                retorno = i;
+                break;
+            }
+        }
+    }
+    return retorno;
 }
 
 /**< DA DE ALTA USUARIOS */
@@ -149,43 +210,13 @@ int ePropietario_alta(ePropietario propietarios[], int limite)
     return retorno;
 }
 
-int pedirNumEntero(char mensaje[])
-{
-    int numeroEntero;
-
-    printf("%s", mensaje);
-    scanf("%d", &numeroEntero);
-
-    return numeroEntero;
-}
-
-/**< BUSCA POR ID Y SI LO ENCUENTRA DEVUELVE EL ÍNDICE */
-int ePropietario_buscarPorId(ePropietario propietarios[] ,int limite, int id)
-{
-    int retorno = -1;
-
-    if(limite > 0 && propietarios != NULL)
-    {
-        retorno = -2;
-        for(int i=0; i<limite; i++)
-        {
-            if(propietarios[i].estado == OCUPADO && propietarios[i].idPropietario == id)
-            {
-                printf("\nSe encontró id %d en la pos %d", id, i);
-                retorno = i;
-                break;
-            }
-        }
-    }
-    return retorno;
-}
-
 /**< MUESTRA UN USUARIO */
 void mostrarUnPropietario(ePropietario propietario)
 {
      printf("\n %s - %d - %s - %s - %d", propietario.nombre, propietario.idPropietario, propietario.direccion, propietario.numTarjetaCred, propietario.estado);
 }
 
+/**< LISTA CON BORRADOS */
 int mostrarListadoPropietariosConBorrados(ePropietario propietarios[],int limite)
 {
     int retorno = -1;
@@ -205,8 +236,38 @@ int mostrarListadoPropietariosConBorrados(ePropietario propietarios[],int limite
     return retorno;
 }
 
+/**< MODIFICA TARJETA PROPIETARIO */
+int ePropietario_modificacion(ePropietario propietarios[], int limite, int posId)
+{
+    int retorno= -2;
+    char tarjeta[30];
 
-/**< DA DE BAJA USUARIOS */
+    if(limite > 0 && propietarios != NULL)
+    {
+        retorno -1;
+
+        if(posId>=0)
+        {
+            retorno= 0;
+            getValidString("\nIngrese Tarjeta: ","\nNumero muy largo", tarjeta, 30);
+            strcpy(propietarios[posId].numTarjetaCred, tarjeta);
+            propietarios[posId].estado= OCUPADO;
+
+            printf("\nSe modifico tarjeta");
+
+        }
+        else
+        {
+            retorno= -3;
+            printf("\nNo se encontro el id ingresado");
+        }
+    }
+
+    return retorno;
+
+}
+
+/**< BAJA DE USUARIOS */
 int ePropietario_baja(ePropietario propietarios[], int limite, int posId)
 {
     int retorno= -2;
@@ -214,7 +275,6 @@ int ePropietario_baja(ePropietario propietarios[], int limite, int posId)
     if(limite > 0 && propietarios != NULL)
     {
         retorno -1;
-        printf("que paso");
 
         if(posId>=0)
         {
@@ -228,47 +288,11 @@ int ePropietario_baja(ePropietario propietarios[], int limite, int posId)
         else
         {
             retorno= -3;
-            printf("\nNo se encontró el id ingresado");
+            printf("\nNo se encontro el id ingresado");
         }
     }
 
     return retorno;
-}
-
-/**< PIDE UN STRING DE CARACTERES */
-void getString(char mensaje[], char input[])
-{
-    printf("%s", mensaje);
-    scanf("%s", input);
-}
-
-/** \brief VALIDA QUE UN STRING DE CARACTERES NO SE EXCEDA DEL LÍMITE
- *
- * \param mensaje a ser mostrado
- * \param mensaje de error
- * \param input Array donde se cargará el texto ingresado
- * \param limite de caracteres
- */
-
-void getValidString(char mensaje[], char error[], char input[], int limite)
-{
-    int j;
-    char auxString[limite+200]; //por si se pasa
-
-    getString(mensaje, input);
-
-    j= strlen(input);
-
-    while (j>= limite)
-    {
-        printf("Ha ingresado %d caracteres\n %s", j, error);
-        getString(mensaje, input);
-
-        j= strlen(input);
-
-    }
-
-    strcpy(auxString, input);
 }
 
 /**< MUESTRA LISTA DE USUARIOS */
