@@ -9,9 +9,9 @@ void mostrarMenu()
 {
     system("cls");
 
-    printf("\nESTACIONAMIENTO>>> Seleccione una opcion: \n\n");
+    printf("\nESTACIONAMIENTO>>> Seleccione una opcion: \n");
 
-    printf("1- Registrar Propietario \n");
+    printf("\n1- Registrar Propietario \n");
     printf("\n2- Modificar datos de propietario\n");
     printf("\n3- Dar de baja propietario\n");
     printf("\n4- Listar propietarios\n");
@@ -31,6 +31,7 @@ int ePropietario_init (ePropietario propietarios[],int limite)
 {
     int retorno = -1;
     int i;
+
     if(limite > 0 && propietarios != NULL)
     {
         retorno = 0;
@@ -48,21 +49,21 @@ void inicializarPropietariosHardCode(ePropietario propietarios[])
 {
 
 
-    int idPropietario[15] = {1,2,3,4};
-    char nombre[][20]= {"Juan","Luis","Maria","Jose"};
-    char numTarjetaCred[][20]= {"111-111","222-222","333-333","444-444"};
-    char direccion[][20]= {"mitre","urquiza","belgrano","alsina"};
-
+    int idPropietario[4] = {1,2,3,4};
+    char nombre[4][30]= {"Juan","Luis","Maria","Jose"};
+    char direccion[4][30]= {"Mitre","Urquiza","Belgrano","Alsina"};
+    char numTarjetaCred[4][20]= {"111-111","222-222","333-333","444-444"};
 
     int i;
 
-    for(i=0; i<15; i++)
+    for(i=0; i<4; i++)
     {
-        propietarios[i].idPropietario=idPropietario[i];
+        propietarios[i].idPropietario= idPropietario[i];
         propietarios[i].estado = 1;
         strcpy(propietarios[i].nombre, nombre[i]);
-        strcpy(propietarios[i].numTarjetaCred, numTarjetaCred[i]);
         strcpy(propietarios[i].direccion, direccion[i]);
+        strcpy(propietarios[i].numTarjetaCred, numTarjetaCred[i]);
+
     }
 }
 
@@ -74,51 +75,42 @@ int ePropietario_buscarLugarLibre(ePropietario propietarios[], int limite)
     if(limite > 0 && propietarios != NULL)
     {
         retorno = -2;
-        for(i=0;i<limite;i++)
+        for(i=0; i<limite; i++)
         {
             if(propietarios[i].estado == LIBRE)
             {
-                retorno = 0;
+                retorno = i;
                 break;
             }
         }
     }
+
+    if(retorno<0)
+    {
+        printf("No hay lugar libre\n");
+    }
+
     return retorno;
 }
 
-/**< BUSCA EL MAYOR Y DEVUELVE EL SIGUIENTE */
 int ePropietario_siguienteId(ePropietario propietarios[],int limite)
 {
     int retorno = 0;
-    int i;
-    int flag=0;
 
     if(limite > 0 && propietarios != NULL)
     {
-        flag =1;
-        for(i=0; i<limite; i++)
+        for(int i=0; i<limite; i++)
         {
-            if(propietarios[i].estado == OCUPADO)
+            if(propietarios[i].estado==OCUPADO)
             {
-                    if(propietarios[i].idPropietario> retorno)
+                    if(propietarios[i].idPropietario > retorno)
                     {
                          retorno= propietarios[i].idPropietario;
                     }
-
             }
         }
     }
-
-    if(flag==1)
-    {
-        retorno= retorno+1; //LE SUMO 1 PARA QUE DE EL SIGUIENTE ID
-    }
-    if(flag==0)
-    {
-        retorno=-1;
-    }
-
-    return retorno;
+    return retorno+1;
 }
 
 /**< DA DE ALTA USUARIOS */
@@ -136,38 +128,50 @@ int ePropietario_alta(ePropietario propietarios[], int limite)
         retorno = -2;
         indice = ePropietario_buscarLugarLibre(propietarios, limite);
 
-        if(indice== 0)//HAY LUGAR LIBRE EN EL VECTOR
+        if(indice>= 0)//HAY LUGAR LIBRE EN EL VECTOR
         {
-            retorno = -3;
-            idPropietario = ePropietario_siguienteId(propietarios, limite);
-
-            if(idPropietario>= 0)//por si hay inconsistencia
-            {
-                getValidString("Ingrese nombre y apellido: \n", "Ha superado el maximo. ", nombre, 50);
-                strcpy(propietarios[indice].nombre, nombre);
-                propietarios[indice].idPropietario = idPropietario;
-                strcpy(propietarios[indice].direccion, direccion);
-                strcpy(propietarios[indice].numTarjetaCred, tarjeta);
-                propietarios[indice].estado = OCUPADO;
-                retorno = 0;
-            }
+            getValidString("Ingrese nombre: \n", "Ha superado el maximo. ", nombre, 50);
+            strcpy(propietarios[indice].nombre, nombre);
+            idPropietario= ePropietario_siguienteId(propietarios, limite);
+            propietarios[indice].idPropietario = idPropietario;
+            getValidString("Ingrese direccion: \n", "Ha superado el maximo. ", direccion, 50);
+            strcpy(propietarios[indice].direccion, direccion);
+            getValidString("Ingrese numero de tarjeta: \n", "Ha superado el maximo. ", tarjeta, 50);
+            strcpy(propietarios[indice].numTarjetaCred, tarjeta);
+            propietarios[indice].estado = OCUPADO;
+            retorno = 0;
+        }
+        else
+        {
+            printf("\n No hay lugar para cargar propietarios");
         }
     }
     return retorno;
+}
+
+int pedirNumEntero(char mensaje[])
+{
+    int numeroEntero;
+
+    printf("%s", mensaje);
+    scanf("%d", &numeroEntero);
+
+    return numeroEntero;
 }
 
 /**< BUSCA POR ID Y SI LO ENCUENTRA DEVUELVE EL ÍNDICE */
 int ePropietario_buscarPorId(ePropietario propietarios[] ,int limite, int id)
 {
     int retorno = -1;
-    int i;
+
     if(limite > 0 && propietarios != NULL)
     {
         retorno = -2;
-        for(i=0;i<limite;i++)
+        for(int i=0; i<limite; i++)
         {
             if(propietarios[i].estado == OCUPADO && propietarios[i].idPropietario == id)
             {
+                printf("\nSe encontró id %d en la pos %d", id, i);
                 retorno = i;
                 break;
             }
@@ -176,34 +180,13 @@ int ePropietario_buscarPorId(ePropietario propietarios[] ,int limite, int id)
     return retorno;
 }
 
-/**< MUESTRA LISTA DE USUARIOS */
-int ePropietario_mostrarlistadoPropietario(ePropietario propietarios[], int limite)
-{
-    int retorno = -1;
-    int i;
-
-
-    if(limite > 0 && propietarios != NULL)
-    {
-        retorno = 0;
-        for(i=0; i<limite; i++)
-        {
-            if(propietarios[i].estado==OCUPADO)
-            {
-                ePropietario_mostrarUno(propietarios[i]);
-            }
-        }
-    }
-    return retorno;
-}
-
 /**< MUESTRA UN USUARIO */
-void ePropietario_mostrarUno(ePropietario propietario)
+void mostrarUnPropietario(ePropietario propietario)
 {
      printf("\n %s - %d - %s - %s - %d", propietario.nombre, propietario.idPropietario, propietario.direccion, propietario.numTarjetaCred, propietario.estado);
 }
 
-int ePropietario_mostrarlistadoPropietarioConBorrados(ePropietario propietarios[],int limite)
+int mostrarListadoPropietariosConBorrados(ePropietario propietarios[],int limite)
 {
     int retorno = -1;
     int i;
@@ -216,7 +199,7 @@ int ePropietario_mostrarlistadoPropietarioConBorrados(ePropietario propietarios[
             {
                 printf("\n[LIBRE]");
             }
-            ePropietario_mostrarUno(propietarios[i]);
+            mostrarUnPropietario(propietarios[i]);
         }
     }
     return retorno;
@@ -224,23 +207,32 @@ int ePropietario_mostrarlistadoPropietarioConBorrados(ePropietario propietarios[
 
 
 /**< DA DE BAJA USUARIOS */
-void ePropietario_baja(ePropietario propietarios[], int limite, int id)
+int ePropietario_baja(ePropietario propietarios[], int limite, int posId)
 {
-    int i;
+    int retorno= -2;
 
-    ePropietario_mostrarlistadoPropietario(propietarios, CANTIDAD);
-
-    printf( "\n \t Seleccione ID a dar de baja");
-    scanf("%d", i);//VER ESTO getchar();
-
-    for (i=0; i<limite; i++)
+    if(limite > 0 && propietarios != NULL)
     {
-        if(propietarios[i].estado == OCUPADO && propietarios[i].idPropietario == id)
-            {
-                propietarios[i].idPropietario= 0;
-                propietarios[i].estado== LIBRE;
-            }
+        retorno -1;
+        printf("que paso");
+
+        if(posId>=0)
+        {
+            retorno= 0;
+            propietarios[posId].idPropietario= 0;
+            propietarios[posId].estado= LIBRE;
+
+            printf("\nSe dio de baja el propietario");
+
+        }
+        else
+        {
+            retorno= -3;
+            printf("\nNo se encontró el id ingresado");
+        }
     }
+
+    return retorno;
 }
 
 /**< PIDE UN STRING DE CARACTERES */
@@ -278,4 +270,29 @@ void getValidString(char mensaje[], char error[], char input[], int limite)
 
     strcpy(auxString, input);
 }
+
+/**< MUESTRA LISTA DE USUARIOS */
+int mostrarListadoPropietarios(ePropietario propietarios[], int limite)
+{
+    int retorno = -2;
+    int i;
+
+    printf("%s\t %s\t\t %s\t %s\n","\nID","Nombre", "Direccion", "Numero de tarjeta");
+
+
+    if(limite > 0 && propietarios != NULL)
+    {
+        for(i=0; i<limite; i++)
+        {
+            retorno = -1;
+            if(propietarios[i].estado==OCUPADO)
+            {
+                retorno= 0;
+                printf("%d\t %s\t\t %s\t\t %s\n", propietarios[i].idPropietario, propietarios[i].nombre, propietarios[i].direccion, propietarios[i].numTarjetaCred);
+            }
+        }
+    }
+    return retorno;
+}
+
 

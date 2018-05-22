@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Propietario.h"
+
 #define TAMPROPIETARIO 50
 
 
@@ -12,10 +14,11 @@ int main()
     int i;
 
 
-    ePropietario listadoPropietario[TAMPROPIETARIO];
+    ePropietario listadoPropietarios[TAMPROPIETARIO];
 
-    ePropietario_init(listadoPropietario, TAMPROPIETARIO);
+    ePropietario_init(listadoPropietarios, TAMPROPIETARIO);
 
+    inicializarPropietariosHardCode(listadoPropietarios);
 
     /*
     ePropietario_mostrarListadoConBorrados(propietario, TAMPROPIETARIO);
@@ -39,7 +42,7 @@ int main()
         {
             case 1:
                 //printf("\nALTA DE PROPIETARIO \n");
-                ePropietario_alta(listadoPropietario, TAMPROPIETARIO);
+                ePropietario_alta(listadoPropietarios, TAMPROPIETARIO);
                 presionarContinuar();
                 break;
             case 2:
@@ -48,15 +51,14 @@ int main()
                 presionarContinuar();
                 break;
             case 3:
-                printf("\nBAJA DEL PROPIETARIO \n");
+                mostrarListadoPropietarios(listadoPropietarios, TAMPROPIETARIO);
+
+                ePropietario_baja(listadoPropietarios, TAMPROPIETARIO, ePropietario_buscarPorId(listadoPropietarios, TAMPROPIETARIO, pedirNumEntero("\nIngrese ID a dar de baja: ")));
+
                 presionarContinuar();
                 break;
             case 4:
-                if(listadoPropietario[i].estado==OCUPADO)
-                {
-                    ePropietario_mostrarlistadoPropietario(listadoPropietario, TAMPROPIETARIO);
-                    system("pause");
-                }
+                mostrarListadoPropietarios(listadoPropietarios, TAMPROPIETARIO);
 
                 presionarContinuar();
 
