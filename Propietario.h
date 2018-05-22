@@ -3,7 +3,11 @@
 
 #define OCUPADO 1
 #define LIBRE 0
-#define CANTIDAD 10
+
+#define ALPHA_ROMEO 1
+#define FERRARI 2
+#define AUDI 3
+#define OTROS 4
 
 typedef struct
 {
@@ -14,6 +18,14 @@ typedef struct
     int estado;
 }ePropietario;
 
+typedef struct
+{
+    char patente[10];
+    int marca;
+	int idAuto;
+    int idPropietario;
+    int estado;
+}eAuto;
 
 int ePropietario_init(ePropietario[],int limite);
 void inicializarPropietariosHardCode(ePropietario[]);
