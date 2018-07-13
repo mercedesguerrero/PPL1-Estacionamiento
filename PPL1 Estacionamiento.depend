@@ -13,13 +13,13 @@
 	<conio.h>
 	"Propietario.h"
 
-1526965235 source:c:\users\mechu\documents\ppl1 estacionamiento\main.c
+1531502757 source:c:\users\mechu\documents\ppl1 estacionamiento\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"Propietario.h"
 
-1526966136 c:\users\mechu\documents\ppl1 estacionamiento\propietario.h
+1531502652 c:\users\mechu\documents\ppl1 estacionamiento\propietario.h
 
 1526965235 source:c:\users\mechu\documents\ppl1 estacionamiento\propietario.c
 	<stdio.h>
@@ -27,4 +27,12 @@
 	<string.h>
 	<conio.h>
 	"Propietario.h"
+
+1531505208 source:c:\users\mechu\documents\ppl1 estacionamiento\autos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Autos.h"
+
+1531505208 c:\users\mechu\documents\ppl1 estacionamiento\autos.h
 

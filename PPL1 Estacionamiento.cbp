@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Autos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Autos.h" />
 		<Unit filename="Propietario.c">
 			<Option compilerVar="CC" />
 		</Unit>
